@@ -138,30 +138,6 @@ public class OAuthRequest internal constructor(
                 appendQueryParameter(requestUriBuilder, "client_id", clientId!!)
             }
 
-            /**
-             * Set the request url by redirecting the auth provider URL with the WearOS auth
-             * site [WEAR_REDIRECT_URL_PREFIX].
-             * The receiving app's package name is also required as the 3rd path component in the
-             * redirect_uri, this allows Wear to ensure other apps cannot reuse your redirect_uri
-             * to receive responses.
-             */
-            appendQueryParameter(
-                requestUriBuilder,
-                REDIRECT_URI_KEY,
-                Uri.withAppendedPath(
-                    if (redirectUrl == null) {
-                        if (WearTypeHelper.isChinaBuild(context)) {
-                            Uri.parse(WEAR_REDIRECT_URL_PREFIX_CN)
-                        } else {
-                            Uri.parse(WEAR_REDIRECT_URL_PREFIX)
-                        }
-                    } else {
-                        redirectUrl
-                    },
-                    packageName
-                ).toString()
-            )
-
             codeChallenge?.let {
                 appendQueryParameter(requestUriBuilder, "response_type", "code")
                 appendQueryParameter(
